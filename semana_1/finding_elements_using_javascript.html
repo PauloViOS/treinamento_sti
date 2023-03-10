@@ -4,18 +4,18 @@
 <head>
     <meta charset="utf-8">
     <title>Finding elements by ID</title>
-    <!-- Modifica para a cor vermelha todos os elementos
-        da classe "animal" que estiverem dentro de tags <p> -->
     <style>
-        p .animal {
-            color: red
-        }
-
         /* Seleciona todos os elementos que são de uma tag <a>
             e que tem, em qualquer lugar da propriedade href,
             a palavra "Dog" */
         a[href*="Dog"] {
             color: yellow;
+        }
+
+        /* Definindo uma regra css para elementos da classe catcolors */
+        .catcolors {
+            color: orange;
+            background-color: black;
         }
     </style>
 </head>
@@ -50,20 +50,26 @@
         for (var i = 0; i < nameEls.length; i++) {
             nameEls[i].innerHTML = "cat"
         };
+
         // Achando elementos por seletores CSS
         // A função retorna um NodeList, que é parecido com um array,
         // que também é indexável
         // Aqui eu pego os elementos e deixo em negrito
         var cssEls = document.querySelectorAll("p .animal");
         for (var i = 0; i < cssEls.length; i++) {
+            cssEls[i].className += " catcolors"
+            // Sobre a linha acima: em navegadores
+            // mais modernos pode-se fazer
+            // nameEls[i].classList.add("catcolors");
             cssEls[i].style.fontWeight = "bold"
         };
+
         // Aqui eu uso um query selector só pra mudar a cor
         // de um elemento que eu selecionei por ID. 
-        var cssEl = document.querySelector("#heading");
-        cssEl.style.color = "green"
-        cssEl.style.backgroundColor = "black"
-        cssEl.style.textAlign = "center"
+        var headingEl = document.querySelector("#heading");
+        headingEl.className = "catcolors"
+        headingEl.style.textAlign = "center"
+
         // Agora, já que a página mudou para gatos,
         // vamos mudar as imagens
         var imageEls = document.getElementsByTagName("img")
@@ -71,6 +77,7 @@
             imageEls[i].src = "https://www.kasandbox.org/programming-images/animals/cat.png"
             imageEls[i].alt = "Gatinho bonitinho"
         }
+
         // Só faltou mudar o link da wikipedia
         var linkEl = document.querySelectorAll("a[href*=\"Dog\"]")
         linkEl[0].href = "http://en.wikipedia.org/wiki/Cat"
