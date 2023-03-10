@@ -4,6 +4,13 @@
 <head>
     <meta charset="utf-8">
     <title>Finding elements by ID</title>
+    <!-- Modifica para a cor vermelha todos os elementos
+        da classe "animal" que estiverem dentro de tags <p> -->
+    <style>
+        p .animal {
+            color: red
+        }
+    </style>
 </head>
 
 <body>
@@ -26,14 +33,28 @@
         1. Find the DOM node using an access method.
         2. Manipulate the DOM node by changing its attributes, styles, inner HTML, or appending new nodes to it.
         */
-        // Modifica o h1
+        // Achando elemento por Id
         var headingEl = document.getElementById("heading");
         headingEl.innerHTML = "All about cats"
-        // Modifica todos os elementos da classe "animal"
+        // Achando elementos por nome da classe
+        // A função retorna um objeto do tipo HTML Collection,
+        // que é um iterável parecido com array (tem índices, length e tal)
         var nameEls = document.getElementsByClassName("animal")
         for (var i = 0; i < nameEls.length; i++) {
             nameEls[i].innerHTML = "cat"
-        }
+        };
+        // Achando elementos por seletores CSS
+        // A função retorna um NodeList, que é parecido com um array,
+        // que também é indexável
+        // Aqui eu pego os elementos e deixo em negrito
+        var cssEls = document.querySelectorAll("p .animal");
+        for (var i = 0; i < cssEls.length; i++) {
+            cssEls[i].style.fontWeight = "bold"
+        };
+        // Aqui eu uso um query selector só pra mudar a cor
+        // de um elemento que eu selecionei por ID. 
+        var cssEl = document.querySelector("#heading");
+        cssEl.style.color = "red"
     </script>
 </body>
 
