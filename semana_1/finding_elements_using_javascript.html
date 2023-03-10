@@ -26,9 +26,14 @@
         1. Find the DOM node using an access method.
         2. Manipulate the DOM node by changing its attributes, styles, inner HTML, or appending new nodes to it.
         */
+        // Modifica o h1
         var headingEl = document.getElementById("heading");
-        console.log(headingEl)
         headingEl.innerHTML = "All about cats"
+        // Modifica todos os elementos da classe "animal"
+        var nameEls = document.getElementsByClassName("animal")
+        for (var i = 0; i < nameEls.length; i++) {
+            nameEls[i].innerHTML = "cat"
+        }
     </script>
 </body>
 
