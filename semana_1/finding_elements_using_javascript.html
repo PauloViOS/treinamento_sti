@@ -10,6 +10,13 @@
         p .animal {
             color: red
         }
+
+        /* Seleciona todos os elementos que são de uma tag <a>
+            e que tem, em qualquer lugar da propriedade href,
+            a palavra "Dog" */
+        a[href*="Dog"] {
+            color: yellow;
+        }
     </style>
 </head>
 
@@ -54,7 +61,18 @@
         // Aqui eu uso um query selector só pra mudar a cor
         // de um elemento que eu selecionei por ID. 
         var cssEl = document.querySelector("#heading");
-        cssEl.style.color = "red"
+        cssEl.style.color = "green"
+        // Agora, já que a página mudou para gatos,
+        // vamos mudar as imagens
+        var imageEls = document.getElementsByTagName("img")
+        for (var i = 0; i < imageEls.length; i++) {
+            imageEls[i].src = "https://www.kasandbox.org/programming-images/animals/cat.png"
+            imageEls[i].alt = "Gatinho bonitinho"
+        }
+        // Só faltou mudar o link da wikipedia
+        var linkEl = document.querySelectorAll("a[href*=\"Dog\"]")
+        linkEl[0].href = "http://en.wikipedia.org/wiki/Cat"
+
     </script>
 </body>
 
