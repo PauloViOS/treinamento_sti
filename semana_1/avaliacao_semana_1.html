@@ -30,6 +30,7 @@
               id="searchPlaceInput"
               class="form-control"
               placeholder="Digite o endereço de busca aqui (Por exemplo: Praça Quinze de Novembro)"
+              onkeyup="changeButtonState()"
             />
           </div>
           <div class="col-auto align-self-center">
@@ -47,7 +48,12 @@
           </div>
         </div>
         <div>
-          <button id="submitButton" type="submit" class="btn btn-primary my-1">
+          <button
+            id="submitButton"
+            type="submit"
+            class="btn btn-primary my-1"
+            disabled
+          >
             Buscar
           </button>
         </div>
@@ -64,18 +70,26 @@
       var onButtonClick = function () {
         var searchPlace = document.getElementById("searchPlaceInput").value;
         var bikeRacksNumber = document.getElementById("bikeRacksNumber").value;
-        console.log(searchPlace);
-        console.log(bikeRacksNumber);
+        const Http = new XMLHttpRequest();
+        const url =
+          "http://dados.recife.pe.gov.br/api/3/action/datastore_search?q=" +
+          searchPlace +
+          "&resource_id=e6e4ac72-ff15-4c5a-b149-a1943386c031&limit=" +
+          bikeRacksNumber;
+        Http.open("GET", url);
+        Http.send();
+        Http.onreadystatechange = (e) => {
+          console.log(Http.responseText);
+        };
       };
+      function changeButtonState() {
+        if (document.getElementById("searchPlaceInput").value.length < 4) {
+          document.getElementById("submitButton").disabled = true;
+        } else {
+          document.getElementById("submitButton").disabled = false;
+        }
+      }
       buttonEl.addEventListener("click", onButtonClick);
-      //   const Http = new XMLHttpRequest();
-      //   const url =
-      //     "http://dados.recife.pe.gov.br/api/3/action/datastore_search?resource_id=e6e4ac72-ff15-4c5a-b149-a1943386c031&limit=5";
-      //   Http.open("GET", url);
-      //   Http.send();
-      //   Http.onreadystatechange = (e) => {
-      //     console.log(Http.responseText);
-      //   };
     </script>
   </body>
 </html>
