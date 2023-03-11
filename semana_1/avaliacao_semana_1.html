@@ -10,6 +10,11 @@
       integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
       crossorigin="anonymous"
     />
+    <style>
+      ul {
+        padding-left: 5px;
+      }
+    </style>
   </head>
 
   <body>
@@ -34,7 +39,7 @@
             />
           </div>
           <div class="col-auto align-self-center">
-            <p class="my-auto"><strong>QTD de bicicletários</strong></p>
+            <p class="my-auto">QTD de bicicletários</p>
           </div>
           <div class="col-1 mx-auto">
             <select class="form-select" id="bikeRacksNumber">
@@ -67,21 +72,36 @@
     ></script>
     <script>
       var buttonEl = document.getElementById("submitButton");
+
       var onButtonClick = function () {
         var searchPlace = document.getElementById("searchPlaceInput").value;
         var bikeRacksNumber = document.getElementById("bikeRacksNumber").value;
-        const Http = new XMLHttpRequest();
+        resp = getBikeLocals(searchPlace, bikeRacksNumber);
+      };
+
+      function getBikeLocals(place, racksNumber) {
         const url =
           "http://dados.recife.pe.gov.br/api/3/action/datastore_search?q=" +
-          searchPlace +
+          place +
           "&resource_id=e6e4ac72-ff15-4c5a-b149-a1943386c031&limit=" +
-          bikeRacksNumber;
-        Http.open("GET", url);
-        Http.send();
-        Http.onreadystatechange = (e) => {
-          console.log(Http.responseText);
-        };
-      };
+          racksNumber;
+        fetch(url)
+          .then((response) => {
+            return response.json();
+          })
+          .then((data) => {
+            let locals = data.result.records;
+            let ul = document.createElement("ul");
+            ul.id = "localsList";
+            document.body.appendChild(ul);
+            locals.map(function (local) {
+              let li = document.createElement("li");
+              li.innerHTML = local.nome.slice(local.nome.indexOf("-") + 1);
+              document.getElementById("localsList").appendChild(li);
+            });
+          });
+      }
+
       function changeButtonState() {
         if (document.getElementById("searchPlaceInput").value.length < 4) {
           document.getElementById("submitButton").disabled = true;
