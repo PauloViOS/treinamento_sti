@@ -52,5 +52,5 @@ ON u.idUsuario = c.idUsuario
 JOIN Parada p
 ON c.idCarona = p.idCarona
 WHERE passageiros >= 2 
--- Deixei com LIKE embaixo pra pegar descrições do tipo "Em frente ao Plaza Shopping"
+-- Deixei com LIKE pra pegar descrições do tipo "Em frente ao Plaza Shopping"
 AND descricao LIKE '%Plaza Shopping%'
