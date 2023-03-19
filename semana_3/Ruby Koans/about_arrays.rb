@@ -21,7 +21,7 @@ class AboutArrays < Neo::Koan
     assert_equal [1, 2, 333], array
   end
 
-  def test_accessing_array_elements #Perguntar pro Gabriel o que significam os :
+  def test_accessing_array_elements # TODO: Perguntar pro Gabriel o que significam os :
     array = [:peanut, :butter, :and, :jelly]
 
     assert_equal :peanut, array[0]
