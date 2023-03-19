@@ -57,6 +57,8 @@ class AboutArrays < Neo::Koan
   end
 
   def test_slicing_with_ranges
+    # Slicing usa a notação .. e ... pra pegar elementos
+    # O .. é inclusivo e o ... exclusivo para o último elemento
     array = [:peanut, :butter, :and, :jelly]
 
     assert_equal [:peanut, :butter, :and], array[0..2]
@@ -65,6 +67,7 @@ class AboutArrays < Neo::Koan
   end
 
   def test_pushing_and_popping_arrays
+    # push e pop funcionam igual em python
     array = [1,2]
     array.push(:last)
 
