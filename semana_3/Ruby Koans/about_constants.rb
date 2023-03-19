@@ -1,3 +1,5 @@
+# Sobre constantes https://www.rubyguides.com/2017/07/ruby-constants/
+
 require File.expand_path(File.dirname(__FILE__) + '/neo')
 
 C = "top level"
@@ -7,16 +9,19 @@ class AboutConstants < Neo::Koan
   C = "nested"
 
   def test_nested_constants_may_also_be_referenced_with_relative_paths
-    assert_equal __, C
+    assert_equal "nested", C
   end
 
   def test_top_level_constants_are_referenced_by_double_colons
-    assert_equal __, ::C
+    # usando :: podemos nos referir à uma constante fora da classe
+    assert_equal "top level", ::C
   end
 
   def test_nested_constants_are_referenced_by_their_complete_path
-    assert_equal __, AboutConstants::C
-    assert_equal __, ::AboutConstants::C
+    # Qualquer uma das duas formas abaixo serve pra se referir à
+    # constante aninhada
+    assert_equal "nested", AboutConstants::C
+    assert_equal "nested", ::AboutConstants::C
   end
 
   # ------------------------------------------------------------------
@@ -35,7 +40,7 @@ class AboutConstants < Neo::Koan
   end
 
   def test_nested_classes_inherit_constants_from_enclosing_classes
-    assert_equal __, Animal::NestedAnimal.new.legs_in_nested_animal
+    assert_equal 4, Animal::NestedAnimal.new.legs_in_nested_animal
   end
 
   # ------------------------------------------------------------------
@@ -45,9 +50,10 @@ class AboutConstants < Neo::Koan
       LEGS
     end
   end
-
+  
   def test_subclasses_inherit_constants_from_parent_classes
-    assert_equal __, Reptile.new.legs_in_reptile
+    # Vai ter 4 pq Reptile herda de Animal
+    assert_equal 4, Reptile.new.legs_in_reptile
   end
 
   # ------------------------------------------------------------------
@@ -63,7 +69,8 @@ class AboutConstants < Neo::Koan
   end
 
   def test_who_wins_with_both_nested_and_inherited_constants
-    assert_equal __, MyAnimals::Bird.new.legs_in_bird
+    # Constantes declaradas no escopo da classe tem precedência sobre constantes herdadas
+    assert_equal 2, MyAnimals::Bird.new.legs_in_bird
   end
 
   # QUESTION: Which has precedence: The constant in the lexical scope,
@@ -72,13 +79,14 @@ class AboutConstants < Neo::Koan
   # ------------------------------------------------------------------
 
   class MyAnimals::Oyster < Animal
+    # TODO: perguntar sobre a diferença entre essa definição de classe e a anterior
     def legs_in_oyster
       LEGS
     end
   end
 
   def test_who_wins_with_explicit_scoping_on_class_definition
-    assert_equal __, MyAnimals::Oyster.new.legs_in_oyster
+    assert_equal 4, MyAnimals::Oyster.new.legs_in_oyster
   end
 
   # QUESTION: Now which has precedence: The constant in the lexical
