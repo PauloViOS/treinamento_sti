@@ -6,6 +6,17 @@ require File.expand_path(File.dirname(__FILE__) + '/neo')
 #   code ...
 # end
 
+#Achei facinho. Implementei de um jeito que todos os testes aabaram passando de primeira sem eu nem ter visto todos 
+class DiceSet
+  attr_reader :values
+  
+  def roll times_to_roll
+    @values = []
+    times_to_roll.times {@values << rand(7)}
+    @values
+  end
+end
+
 class AboutDiceProject < Neo::Koan
   def test_can_create_a_dice_set
     dice = DiceSet.new
