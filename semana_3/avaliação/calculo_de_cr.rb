@@ -47,26 +47,27 @@ class Aluno
     puts "-----------------------------"
   end
 
+  def self.monta_bd_dos_alunos table
+    table.each { |linha|
+      matricula = linha["MATRICULA"]
+      curso = linha["COD_CURSO"]
+      Aluno.alunos.key?(matricula) ? next : Aluno.new(matricula, curso)
+    }
+    table.each { |linha|
+      matricula = linha["MATRICULA"]
+      disciplina = linha["COD_DISCIPLINA"]
+      nota = linha["NOTA"]
+      carga_horaria = linha["CARGA_HORARIA"]
+      ano_semestre = linha["ANO_SEMESTRE"]
+      Aluno.adicionar_nota matricula, disciplina, nota, carga_horaria, ano_semestre
+    }
+    table.each { |linha|
+      matricula = linha["MATRICULA"]
+      Aluno.calcular_cr matricula
+    }
+  end
+
 end
 
-table.each { |linha|
-  matricula = linha["MATRICULA"]
-  curso = linha["COD_CURSO"]
-  Aluno.alunos.key?(matricula) ? next : Aluno.new(matricula, curso)
-}
-
-table.each { |linha|
-  matricula = linha["MATRICULA"]
-  disciplina = linha["COD_DISCIPLINA"]
-  nota = linha["NOTA"]
-  carga_horaria = linha["CARGA_HORARIA"]
-  ano_semestre = linha["ANO_SEMESTRE"]
-  Aluno.adicionar_nota matricula, disciplina, nota, carga_horaria, ano_semestre
-}
-
-table.each { |linha|
-  matricula = linha["MATRICULA"]
-  Aluno.calcular_cr matricula
-}
-
+Aluno.monta_bd_dos_alunos table
 Aluno.mostrar_cr_de_todos_os_alunos
