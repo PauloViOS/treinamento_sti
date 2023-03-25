@@ -1,6 +1,6 @@
 require 'csv'
 
-$table = CSV.parse(File.read("notas.csv"), headers: true)
+table = CSV.parse(File.read("notas.csv"), headers: true)
 
 class Aluno
   @@alunos = {}
@@ -31,12 +31,20 @@ class Aluno
     nota_vezes_carga_total = 0
     for disciplina in @@alunos[matricula]["disciplinas"]
       carga = disciplina[:carga_horaria].to_i
-      nota = disciplina[:nota].to_f
+      nota = disciplina[:nota].to_f.round(2)
       carga_total += carga
       nota_vezes_carga_total += carga*nota
     end
     calculo_cr = nota_vezes_carga_total/carga_total
-    @@alunos[matricula][:cr] = calculo_cr
+    @@alunos[matricula]["cr"] = calculo_cr.round(2)
+  end
+
+  def self.mostrar_cr_de_todos_os_alunos
+    puts "----- O CR dos alunos é -----"
+    @@alunos.each do |aluno, dict|
+      puts "#{aluno}  -  #{dict["cr"]}"
+    end
+    puts "-----------------------------"
   end
 
 end
@@ -61,4 +69,4 @@ table.each { |linha|
   Aluno.calcular_cr matricula
 }
 
-# puts Aluno.alunos
+Aluno.mostrar_cr_de_todos_os_alunos
