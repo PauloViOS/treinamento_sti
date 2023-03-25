@@ -61,13 +61,14 @@ class Aluno
       ano_semestre = linha["ANO_SEMESTRE"]
       Aluno.adicionar_nota matricula, disciplina, nota, carga_horaria, ano_semestre
     }
-    table.each { |linha|
-      matricula = linha["MATRICULA"]
-      Aluno.calcular_cr matricula
-    }
+  end
+
+  def self.calcular_cr_de_todos
+    @@alunos.each_key { |matricula| calcular_cr matricula}
   end
 
 end
 
 Aluno.monta_bd_dos_alunos table
+Aluno.calcular_cr_de_todos
 Aluno.mostrar_cr_de_todos_os_alunos
