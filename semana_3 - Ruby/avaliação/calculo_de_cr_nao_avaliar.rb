@@ -43,24 +43,24 @@ class Aluno
   def initialize matricula, curso
     @matricula = matricula
     @@alunos[@matricula] = {}
-    @@alunos[@matricula]["cr"] = 0
-    @@alunos[@matricula]["curso"] = curso
-    @@alunos[@matricula]["disciplinas"] =  []
+    @@alunos[@matricula][:cr] = 0
+    @@alunos[@matricula][:curso] = curso
+    @@alunos[@matricula][:disciplinas] =  []
   end
 
   def self.adicionar_nota matricula, disciplina, nota, carga_horaria, ano_semestre
-    @@alunos[matricula]["disciplinas"] << {
-      "disciplina": disciplina,
-      "nota": nota,
-      "ano_semestre": ano_semestre,
-      "carga_horaria": carga_horaria
+    @@alunos[matricula][:disciplinas] << {
+      :disciplina => disciplina,
+      :nota => nota,
+      :ano_semestre => ano_semestre,
+      :carga_horaria => carga_horaria
     }
   end
 
   def self.calcular_cr matricula
     carga_total = 0
     nota_vezes_carga_total = 0
-    for disciplina in @@alunos[matricula]["disciplinas"]
+    for disciplina in @@alunos[matricula][:disciplinas]
       carga = disciplina[:carga_horaria].to_i
       nota = disciplina[:nota].to_f.round(2)
       carga_total += carga
@@ -100,10 +100,10 @@ class Aluno
 
 end
 
-Curso.cria_bd_cursos table
-Curso.mostra_cursos
+# Curso.cria_bd_cursos table
+# Curso.mostra_cursos
 
 
-# Aluno.monta_bd_dos_alunos table
-# Aluno.calcular_cr_de_todos
-# Aluno.mostrar_cr_de_todos_os_alunos
+Aluno.monta_bd_dos_alunos table
+Aluno.calcular_cr_de_todos
+Aluno.mostrar_cr_de_todos_os_alunos
