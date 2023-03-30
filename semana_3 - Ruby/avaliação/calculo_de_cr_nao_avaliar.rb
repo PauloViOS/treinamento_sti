@@ -4,6 +4,7 @@ table = CSV.parse(File.read("notas.csv"), headers: true)
 
 class Curso
   @@cursos = {}
+
   def initialize codigo
     @codigo = codigo
     @@cursos[@codigo] = {}
@@ -12,7 +13,7 @@ class Curso
   def self.cria_bd_cursos table
     table.each do |linha|
       codigo = linha["COD_CURSO"]
-      @@cursos.has_key?(codigo) ? next : @@cursos[codigo] = []
+      @@cursos.has_key?(codigo) ? next : Curso.new(codigo)
     end
   end
 
@@ -21,17 +22,20 @@ class Curso
   end
 end
 
-class Disciplina
-  @@disciplinas = {}
-  def initialize table
-    table.each do |linha|
-      @carga = linha["CARGA_HORARIA"]
-      @codigo = linha["COD_DISCIPLINA"]
-      @codigo = linha["COD_CURSO"]
-
-    end
-  end
-end
+# class Disciplina
+#   @@disciplinas = {}
+#
+#   def initialize table
+#     table.each do |linha|
+#       @carga = linha["CARGA_HORARIA"]
+#       @codigo = linha["COD_DISCIPLINA"]
+#       @codigo = linha["COD_CURSO"]
+#     end
+#   end
+#
+  # def monta_bd_disciplinas
+  #   @@disciplinas.has_key?(codigo) ? next : @@cursos[codigo] = []
+  # end
 
 class Aluno
   @@alunos = {}
@@ -60,7 +64,7 @@ class Aluno
   def self.calcular_cr matricula
     carga_total = 0
     nota_vezes_carga_total = 0
-    for disciplina in @@alunos[matricula][:disciplinas]
+    @@alunos[matricula][:disciplinas].each do |disciplina|
       carga = disciplina[:carga_horaria].to_i
       nota = disciplina[:nota].to_f.round(2)
       carga_total += carga
@@ -100,10 +104,10 @@ class Aluno
 
 end
 
-# Curso.cria_bd_cursos table
-# Curso.mostra_cursos
+Curso.cria_bd_cursos table
+Curso.mostra_cursos
 
 
-Aluno.monta_bd_dos_alunos table
-Aluno.calcular_cr_de_todos
-Aluno.mostrar_cr_de_todos_os_alunos
+# Aluno.monta_bd_dos_alunos table
+# Aluno.calcular_cr_de_todos
+# Aluno.mostrar_cr_de_todos_os_alunos
