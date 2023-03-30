@@ -22,20 +22,33 @@ class Curso
   end
 end
 
-# class Disciplina
-#   @@disciplinas = {}
-#
-#   def initialize table
-#     table.each do |linha|
-#       @carga = linha["CARGA_HORARIA"]
-#       @codigo = linha["COD_DISCIPLINA"]
-#       @codigo = linha["COD_CURSO"]
-#     end
-#   end
-#
-  # def monta_bd_disciplinas
-  #   @@disciplinas.has_key?(codigo) ? next : @@cursos[codigo] = []
-  # end
+class Disciplina
+  @@disciplinas = {}
+
+  def initialize codigo, carga, curso
+    @codigo = codigo
+    @carga = carga
+    @curso = curso
+    @@disciplinas[@codigo.to_sym] = {
+      "carga" => @carga,
+      "curso" => @curso
+    }
+  end
+
+  def self.cria_bd_disciplinas table
+    table.each do |linha|
+      carga = linha["CARGA_HORARIA"]
+      codigo = linha["COD_DISCIPLINA"]
+      curso = linha["COD_CURSO"]
+      @@disciplinas.has_key?(codigo) ? next : Disciplina.new(codigo, carga, curso)
+    end
+  end
+
+  def self.mostra_disciplinas
+    print @@disciplinas
+  end
+
+end
 
 class Aluno
   @@alunos = {}
@@ -104,8 +117,11 @@ class Aluno
 
 end
 
-Curso.cria_bd_cursos table
-Curso.mostra_cursos
+Disciplina.cria_bd_disciplinas table
+Disciplina.mostra_disciplinas
+
+# Curso.cria_bd_cursos table
+# Curso.mostra_cursos
 
 
 # Aluno.monta_bd_dos_alunos table
