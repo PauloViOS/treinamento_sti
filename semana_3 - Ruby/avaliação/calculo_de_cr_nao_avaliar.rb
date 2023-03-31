@@ -7,7 +7,7 @@ class Curso
 
   def initialize codigo
     @codigo = codigo
-    @@cursos[@codigo] = {}
+    @@cursos[@codigo] = []
   end
 
   def self.cria_bd_cursos table
@@ -18,7 +18,13 @@ class Curso
   end
 
   def self.mostra_cursos
-    print @@cursos
+    @@cursos.each do |curso, disciplinas|
+      puts "#{curso}: #{disciplinas}"
+    end
+  end
+
+  def self.adiciona_disciplina_no_curso(curso, hash_da_disciplina)
+    @@cursos[curso] << hash_da_disciplina
   end
 end
 
@@ -41,6 +47,15 @@ class Disciplina
       codigo = linha["COD_DISCIPLINA"]
       curso = linha["COD_CURSO"]
       @@disciplinas.has_key?(codigo) ? next : Disciplina.new(codigo, carga, curso)
+    end
+  end
+
+  def self.adiciona_disc_nos_cursos
+    @@disciplinas.each do |disciplina, hash|
+      carga = hash["carga"]
+      curso = hash["curso"]
+      disciplina_carga = {"disciplina": disciplina, "carga": carga}
+      Curso.adiciona_disciplina_no_curso(curso, disciplina_carga)
     end
   end
 
@@ -117,11 +132,11 @@ class Aluno
 
 end
 
+Curso.cria_bd_cursos table
 Disciplina.cria_bd_disciplinas table
-Disciplina.mostra_disciplinas
+Disciplina.adiciona_disc_nos_cursos
+Curso.mostra_cursos
 
-# Curso.cria_bd_cursos table
-# Curso.mostra_cursos
 
 
 # Aluno.monta_bd_dos_alunos table
