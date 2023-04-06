@@ -28,6 +28,28 @@ class Curso
   def self.adiciona_disciplina_no_curso(curso, hash_da_disciplina)
     @@cursos[curso]["disciplinas"] << hash_da_disciplina
   end
+
+  def self.calcula_cr_medio_dos_cursos
+    infos_cursos = {}
+    @@cursos.each_key do |curso|
+      infos_cursos[curso] = {
+        :cr_acumulado => 0,
+        :qtde_alunos => 0,
+        :cr_medio => 0
+      }
+    end
+    Aluno.alunos.each_value do |infos_aluno|
+      curso = infos_aluno[:curso]
+      infos_cursos[curso][:cr_acumulado] += infos_aluno[:cr]
+      infos_cursos[curso][:qtde_alunos] += 1
+    end
+    infos_cursos.each_value do |infos|
+      infos[:cr_medio] = (infos[:cr_acumulado]/infos[:qtde_alunos]).round(2)
+    end
+    @@cursos.each do |curso, infos|
+      infos["cr"] = infos_cursos[curso][:cr_medio]
+    end
+  end
 end
 
 class Disciplina
@@ -64,10 +86,6 @@ class Disciplina
   def self.mostra_disciplinas
     print @@disciplinas
   end
-
-  def self.calcula_cr_dos_curso
-  end
-
 end
 
 class Aluno
@@ -149,6 +167,6 @@ Aluno.cria_bd_dos_alunos table
 
 Disciplina.adiciona_disc_nos_cursos
 Aluno.calcular_cr_de_todos
+Curso.calcula_cr_medio_dos_cursos
 
-# Aluno.mostrar_cr_de_todos_os_alunos
-Curso.mostra_cursos
+Aluno.mostrar_cr_de_todos_os_alunos
