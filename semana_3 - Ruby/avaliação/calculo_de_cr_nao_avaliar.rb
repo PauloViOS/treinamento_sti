@@ -7,7 +7,9 @@ class Curso
 
   def initialize codigo
     @codigo = codigo
-    @@cursos[@codigo] = []
+    @@cursos[@codigo] = {}
+    @@cursos[@codigo]["cr"] = 0
+    @@cursos[@codigo]["disciplinas"] = []
   end
 
   def self.cria_bd_cursos table
@@ -24,7 +26,7 @@ class Curso
   end
 
   def self.adiciona_disciplina_no_curso(curso, hash_da_disciplina)
-    @@cursos[curso] << hash_da_disciplina
+    @@cursos[curso]["disciplinas"] << hash_da_disciplina
   end
 end
 
@@ -63,6 +65,9 @@ class Disciplina
     print @@disciplinas
   end
 
+  def self.calcula_cr_dos_curso
+  end
+
 end
 
 class Aluno
@@ -99,18 +104,18 @@ class Aluno
       nota_vezes_carga_total += carga*nota
     end
     calculo_cr = nota_vezes_carga_total/carga_total
-    @@alunos[matricula]["cr"] = calculo_cr.round(2)
+    @@alunos[matricula][:cr] = calculo_cr.round(2)
   end
 
   def self.mostrar_cr_de_todos_os_alunos
     puts "----- O CR dos alunos é -----"
     @@alunos.each do |aluno, dict|
-      puts "#{aluno}  -  #{dict["cr"]}"
+      puts "#{aluno}  -  #{dict[:cr]}"
     end
     puts "-----------------------------"
   end
 
-  def self.monta_bd_dos_alunos table
+  def self.cria_bd_dos_alunos table
     table.each { |linha|
       matricula = linha["MATRICULA"]
       curso = linha["COD_CURSO"]
@@ -130,15 +135,20 @@ class Aluno
     @@alunos.each_key { |matricula| calcular_cr matricula}
   end
 
+  def self.mostra_alunos
+    @@alunos.each do |aluno, infos|
+      puts "#{aluno}: #{infos}"
+    end
+  end
+
 end
 
 Curso.cria_bd_cursos table
 Disciplina.cria_bd_disciplinas table
+Aluno.cria_bd_dos_alunos table
+
 Disciplina.adiciona_disc_nos_cursos
-Curso.mostra_cursos
+Aluno.calcular_cr_de_todos
 
-
-
-# Aluno.monta_bd_dos_alunos table
-# Aluno.calcular_cr_de_todos
 # Aluno.mostrar_cr_de_todos_os_alunos
+Curso.mostra_cursos
