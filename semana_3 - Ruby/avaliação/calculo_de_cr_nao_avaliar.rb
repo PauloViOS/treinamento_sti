@@ -50,6 +50,15 @@ class Curso
       infos["cr"] = infos_cursos[curso][:cr_medio]
     end
   end
+
+  def self.mostrar_cr_de_todos_os_cursos
+    puts "----- Média de CR dos Cursos -----"
+    @@cursos.each do |curso, dict|
+      # puts "#{curso}  -  #{dict["cr"]}"
+      printf "%-4s - %4d\n", curso, dict["cr"]
+    end
+    puts "----------------------------------"
+  end
 end
 
 class Disciplina
@@ -126,11 +135,11 @@ class Aluno
   end
 
   def self.mostrar_cr_de_todos_os_alunos
-    puts "----- O CR dos alunos é -----"
+    puts "------- O CR dos alunos é: -------"
     @@alunos.each do |aluno, dict|
       puts "#{aluno}  -  #{dict[:cr]}"
     end
-    puts "-----------------------------"
+    puts "----------------------------------"
   end
 
   def self.cria_bd_dos_alunos table
@@ -170,3 +179,4 @@ Aluno.calcular_cr_de_todos
 Curso.calcula_cr_medio_dos_cursos
 
 Aluno.mostrar_cr_de_todos_os_alunos
+Curso.mostrar_cr_de_todos_os_cursos
